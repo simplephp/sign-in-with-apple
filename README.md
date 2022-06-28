@@ -117,8 +117,7 @@ $data = $authorize->refreshAccessToken($refreshToken);
 ```
 
 ```php
-###结果
-// 请求apple成功后，不管apple 取消授权成功或失败都是返回空数组 无法判定（可忽略）
+###结果 注意：使用 refresh_token 刷新过 access_token 则不会返回 refresh_token
 array(4) {
   ["access_token"]=>
   string(64) "xx.0.rrvqv.xx"
