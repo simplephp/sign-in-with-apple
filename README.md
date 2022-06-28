@@ -5,9 +5,9 @@
 // 通过 authorizationCode 远程校验，另外通过identityToken 可以使用 localAuthCode 方法来本地验证（本地验证无法拿到 access_token/refresh_token等信息）
 
 $authorizationCode = 'xxxx';
-$clientID = 'com.xxxx.xxx';// app bundle id
+$clientID = 'com.xxxx.xxx';     // app bundle id
 $teamID  = 'xxxxxxxxxxx';       // 苹果开发中心(https://developer.apple.com/) => Membership => team ID
-$keyID  = 'xxxxxxxxxxxx';        //  苹果开发中心(https://developer.apple.com/) => 在“Certificates, Identifiers & Profiles (英文)”(证书、标识符和描述文件) 中，从侧边栏中选择“Identifiers”(标识符), 在证书配置管理中心，配置Sign In with Apple功能 => 创建则会得到一个私钥，该文件为”AuthKey_{Kid}.p8”，注意保存，其中页面中还有 Key ID
+$keyID  = 'xxxxxxxxxxxx';       // 苹果开发中心(https://developer.apple.com/) => 在“Certificates, Identifiers & Profiles (英文)”(证书、标识符和描述文件) 中，从侧边栏中选择“Identifiers”(标识符), 在证书配置管理中心，配置Sign In with Apple功能 => 创建则会得到一个私钥，该文件为”AuthKey_{Kid}.p8”，注意保存，其中页面中还有 Key ID
 
 // AuthKey_{Kid}.p8 密钥 转化为 .pem 格式密钥， openssl pkcs8 -in AuthKey_KEY_ID.p8 -nocrypt -out AuthKey_KEY_ID.pem
 $privateKey = <<<EOD
@@ -66,9 +66,9 @@ array(5) {
 
 ```php
 <?php
-// 通过 accessToken (通过remoteAuthCode方法而来) 移除远程授权，移除后前端将收到 Notify 通知
+// 通过 refreshToken (通过remoteAuthCode方法而来) 移除远程授权，移除后前端将收到 Notify 通知,注意：如果使用access_token有效期3600s，可能存在已经失效造成无法注销的问题，建议使用 refresh_token 去注销，如果使用 refresh_token 刷新过access_token 则需要前端重新授权获取 access_token 和 refresh_token 然后再次注销
 
-$accessToken = 'xxxx';
+$refreshToken = 'xxxx';
 $clientID = 'com.xxxx.221';// app bundle id
 $teamID  = 'xxxxxxxxx';       // 苹果开发中心(https://developer.apple.com/) => Membership => team ID
 $keyID  = 'xxxxxxxxx';        //  苹果开发中心(https://developer.apple.com/) => 在“Certificates, Identifiers & Profiles (英文)”(证书、标识符和描述文件) 中，从侧边栏中选择“Identifiers”(标识符), 在证书配置管理中心，配置Sign In with Apple功能 => 创建则会得到一个私钥，该文件为”AuthKey_{Kid}.p8”，注意保存，其中页面中还有 Key ID
@@ -83,7 +83,7 @@ AUaUQ8mo
 -----END PRIVATE KEY-----
 EOD;
 $authorize = new \Simplephp\Apple\Authorize($clientID, $teamID, $keyID, $privateKey);
-$data = $authorize->revokeToken($accessToken);
+$data = $authorize->revokeToken($refreshToken);
 ```
 
 ```php

@@ -125,7 +125,7 @@ class Authorize {
      * @param string $token  refresh_token 或 access_token 类型和值一一对应(remoteAuthCode)
      * @return void
      */
-    public function revokeToken(string $tokenx, $type = 'access_token') {
+    public function revokeToken(string $tokenx, $type = 'refresh_token') {
         try {
             $params = [
                 'client_id' => $this->clientID,
